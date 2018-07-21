@@ -1,0 +1,11 @@
+//join takes partial paths and joins them together
+
+// console.log(__dirname + '/../public');
+// ///home/silas/Desktop/node-chat-app/server/../public
+
+// console.log(publicPath);
+// // /home/silas/Desktop/node-chat-app/public
+
+// app.get('/', (req, res) => {
+//     res.sendFile(publicPath);
+// });
