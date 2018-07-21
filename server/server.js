@@ -22,9 +22,23 @@ var io = socketIO(server);
 io.on('connection', (socket) => {
     console.log('New User Connected');
 
+    //call a method on socket to emit to client, the object lets you specify anything you like
+
+    socket.emit('newMessage', {
+        from:'silas.crosby@yahoo.com',
+        text: 'hello Rachel I love you',
+        createdAt: 321321
+    });
+
+    socket.on('createMessage', (message) => {
+        console.log('createMessage:', message)
+    });
+
     socket.on('disconnect', () => {
         console.log('User was disconnected');
-    })
+    });
+
+    
 });//registers an event register
 
 
