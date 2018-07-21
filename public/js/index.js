@@ -4,10 +4,6 @@ socket.on('connect', function() {
     console.log('Connected to Server');
 
 //the user will be able to spoof the created at so it should only be on the server
-    socket.emit('createMessage', {
-        to:'jerry',
-        text: `Hi jerry you're the best`
-    });
 });
 
 socket.on('disconnect', function(){

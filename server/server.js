@@ -24,14 +24,14 @@ io.on('connection', (socket) => {
 
     //call a method on socket to emit to client, the object lets you specify anything you like
 
-    socket.emit('newMessage', {
-        from:'silas.crosby@yahoo.com',
-        text: 'hello Rachel I love you',
-        createdAt: 321321
-    });
-
     socket.on('createMessage', (message) => {
-        console.log('createMessage:', message)
+        // console.log('createMessage:', message);
+        //io.emit emits an event to every single connection
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        });
     });
 
     socket.on('disconnect', () => {
