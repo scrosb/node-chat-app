@@ -1,5 +1,21 @@
 var socket = io();
 
+function scrollToBottom() {
+    //selectors
+    var messages = jQuery('#messages');
+    var newMessage = messages.children('li:last-child'); //select all the child elements of a message, 
+    //heights, prop selects a height
+    var clientHeight = messages.prop('clientHeight');
+    var scrollTop = messages.prop('scrollTop');
+    var scrollHeight = messages.prop('scrollHeight');
+    var newMessageHeight = newMessage.innerHeight();//inner height of the last message child
+    var lastMessageHeight = newMessage.prev().innerHeight(); //previous child's height
+
+    if(clientHeight+scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        messages.scrollTop(scrollHeight);//moving to the bottom of the messages area
+    }
+}
+
 socket.on('connect', function() {
     console.log('Connected to Server');
 
@@ -27,6 +43,7 @@ socket.on('newMessage', function(msg){
     });
 
     jQuery('#messages').append(html);
+    scrollToBottom();
     
     // console.log('newMessage', msg);
     // //create a list item
@@ -58,6 +75,8 @@ socket.on('newLocationMessage', function(message){
    })
 
     jQuery('#messages').append(locHtml);
+
+    scrollToBottom();
     // var a = jQuery('<a target="_blank">My Current Location</a>');
     // //we're not putting these into template strings in order to not allow someone to inject html
     // li.text(`${message.from} ${formattedTime}: `);
