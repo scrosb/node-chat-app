@@ -32,7 +32,17 @@ socket.on('newMessage', function(msg){
 //     console.log('Got it',data);
 // });
 
-
+//target="_blank" tells the current tab to open up a new tab in another
+socket.on('newLocationMessage', function(message){
+    var li = jQuery('<li></li>');
+    var a = jQuery('<a target="_blank">My Current Location</a>');
+    //we're not putting these into template strings in order to not allow someone to inject html
+    li.text(`${message.from}: `);
+    //set the href value equal to url
+    a.attr('href', message.url);
+    li.append(a);
+    jQuery('#messages').append(li);
+});
 
 //we need to add an event into the function that overrides the default page refresh
 jQuery('#message-form').on('submit', function(e) {
@@ -54,7 +64,11 @@ locationButton.on('click', function() {
     } 
     navigator.geolocation.getCurrentPosition( function (position) {
         console.log(position);
+        socket.emit('createLocationMessage', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        })
     }, function() {
         alert('Unable to fetch location');
-    })
+    });
 });
