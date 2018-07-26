@@ -32,17 +32,20 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'));
 
 
-    socket.on('createMessage', (message) => {
-        // console.log('createMessage:', message);
+    socket.on('createMessage', (message, callback) => {
+        console.log('createMessage:', message,);
         //io.emit emits an event to every single connection the message from one user
         //is emitted to every single other user
         io.emit('newMessage', generateMessage(message.from, message.text));
+        
         //broadcast will send the event to everybody but this socket
         // socket.broadcast.emit('newMessage', {
         //         from: message.from,
         //         text: message.text,
         //         createdAt: new Date().getTime()
         // });
+        //this calls the function on the client side
+        callback('This is from the server');
     });
 
     socket.on('disconnect', () => {
