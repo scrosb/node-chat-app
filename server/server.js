@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
     //call a method on socket to emit to client, the object lets you specify anything you like
 
     //socket.emit from Admin text welcome to the chat to user that joined
-    socket.emit('newMessage', generateMessage('Admin', 'welcome to the chat app'));
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the Chat App'));
     //socket.broadcast.emit from Admin, text: new user joined
 
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'));

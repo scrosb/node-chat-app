@@ -17,12 +17,24 @@ socket.on('newEmail', function(email){
 
 socket.on('newMessage', function(msg){
     var formattedTime = moment(msg.createdAt).format('h:mm a')
-    console.log('newMessage', msg);
-    //create a list item
-    var li = jQuery('<li></li>');
-    li.text(`${msg.from} ${formattedTime}: ${msg.text}`);
+    var template = jQuery('#message-template').html();
 
-    jQuery('#messages').append(li);
+    //this is a reusable component in the HTML that mustache creates
+    var html = Mustache.render(template, {
+        text: msg.text,
+        from: msg.from,
+        createdAt: formattedTime
+    });
+
+    jQuery('#messages').append(html);
+    
+    // console.log('newMessage', msg);
+    // //create a list item
+    // var li = jQuery('<li></li>');
+    // li.text(`${msg.from} ${formattedTime}: ${msg.text}`);
+
+    // jQuery('#messages').append(li);
+
 });
 
 //we have to add a 3rd element on the server and client to acknowledge the event
@@ -35,15 +47,24 @@ socket.on('newMessage', function(msg){
 
 //target="_blank" tells the current tab to open up a new tab in another
 socket.on('newLocationMessage', function(message){
-    var formattedTime = moment(message.createdAt).format('h:mm a')
-    var li = jQuery('<li></li>');
-    var a = jQuery('<a target="_blank">My Current Location</a>');
-    //we're not putting these into template strings in order to not allow someone to inject html
-    li.text(`${message.from} ${formattedTime}: `);
-    //set the href value equal to url
-    a.attr('href', message.url);
-    li.append(a);
-    jQuery('#messages').append(li);
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    //select the script template in your index.js
+    var locTemplate = jQuery('#location-message-template').html();
+
+   var locHtml = Mustache.render(locTemplate, {
+        from:message.from,
+        createdAt: formattedTime,
+        url:message.url
+   })
+
+    jQuery('#messages').append(locHtml);
+    // var a = jQuery('<a target="_blank">My Current Location</a>');
+    // //we're not putting these into template strings in order to not allow someone to inject html
+    // li.text(`${message.from} ${formattedTime}: `);
+    // //set the href value equal to url
+    // a.attr('href', message.url);
+    // li.append(a);
+    
 });
 
 //we need to add an event into the function that overrides the default page refresh
