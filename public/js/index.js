@@ -16,10 +16,11 @@ socket.on('newEmail', function(email){
 });
 
 socket.on('newMessage', function(msg){
+    var formattedTime = moment(msg.createdAt).format('h:mm a')
     console.log('newMessage', msg);
     //create a list item
     var li = jQuery('<li></li>');
-    li.text(`${msg.from}: ${msg.text}`);
+    li.text(`${msg.from} ${formattedTime}: ${msg.text}`);
 
     jQuery('#messages').append(li);
 });
@@ -34,10 +35,11 @@ socket.on('newMessage', function(msg){
 
 //target="_blank" tells the current tab to open up a new tab in another
 socket.on('newLocationMessage', function(message){
+    var formattedTime = moment(message.createdAt).format('h:mm a')
     var li = jQuery('<li></li>');
     var a = jQuery('<a target="_blank">My Current Location</a>');
     //we're not putting these into template strings in order to not allow someone to inject html
-    li.text(`${message.from}: `);
+    li.text(`${message.from} ${formattedTime}: `);
     //set the href value equal to url
     a.attr('href', message.url);
     li.append(a);
