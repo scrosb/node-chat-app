@@ -32,6 +32,8 @@ socket.on('newMessage', function(msg){
 //     console.log('Got it',data);
 // });
 
+
+
 //we need to add an event into the function that overrides the default page refresh
 jQuery('#message-form').on('submit', function(e) {
     e.preventDefault();
@@ -42,4 +44,17 @@ jQuery('#message-form').on('submit', function(e) {
     }, function(){
 
     });
+});
+
+var locationButton = jQuery('#send-location');
+
+locationButton.on('click', function() {
+    if(!navigator.geolocation){
+        return alert('Geolocation not Supported');
+    } 
+    navigator.geolocation.getCurrentPosition( function (position) {
+        console.log(position);
+    }, function() {
+        alert('Unable to fetch location');
+    })
 });
