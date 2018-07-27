@@ -16,8 +16,22 @@ function scrollToBottom() {
     }
 }
 
+
 socket.on('connect', function() {
-    console.log('Connected to Server');
+    
+    //emit an event that adds the room
+    //grab the url params that are passed from the login
+    var params = jQuery.deparam(window.location.search);
+    socket.emit('join', params, function(err) {
+        if(err) {
+            alert(err);
+            //redirect to root page if there is an error
+            window.location.href = '/';
+        } else {
+            //set up listener inside server.js for join
+            console.log('No error');
+        }
+    })
 
 //the user will be able to spoof the created at so it should only be on the server
 });
@@ -25,6 +39,21 @@ socket.on('connect', function() {
 socket.on('disconnect', function(){
     console.log('Disconnected From Server');
 });
+
+socket.on('updateUserList', function(users){
+    console.log('Users List', users);
+    var ol = jQuery('<ol></ol>');
+
+    //iterate through the list 
+    users.forEach(function(user) {
+        ol.append(jQuery('<li></li>').text(user));
+    });
+    jQuery('#users').html(ol);
+
+    //add it to the Dom
+
+
+})
 
 //the data emitted with your event is provided by the first argument
 socket.on('newEmail', function(email){
