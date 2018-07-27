@@ -120,8 +120,8 @@ jQuery('#message-form').on('submit', function(e) {
     e.preventDefault();
     var messageTextbox = jQuery('[name=message]');
 
+    //the incorrect name comes from here, the name is stored by the server
     socket.emit('createMessage', {
-        from:'User',
         text: messageTextbox.val()
     }, function(){
         //once the request has been received, clear the value
